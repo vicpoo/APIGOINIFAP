@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/vicpoo/APIGOINIFAP/src/core"
 	"github.com/vicpoo/APIGOINIFAP/src/rol/infrastructure"
+	usersInfrastructure "github.com/vicpoo/APIGOINIFAP/src/users/infrastructure"
 )
 
 func main() {
@@ -30,6 +31,10 @@ func main() {
 	// Registrar rutas de roles
 	rolRouter := infrastructure.NewRolRouter(engine)
 	rolRouter.Run()
+
+	// Registrar rutas de usuarios
+	userRouter := usersInfrastructure.NewUserRouter(engine)
+	userRouter.Run()
 
 	// Correr servidor en el puerto 8000
 	port := ":8000"

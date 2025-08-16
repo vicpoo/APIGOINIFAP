@@ -1,3 +1,4 @@
+//DeleteRolUseCase.go
 package application
 
 import repositories "github.com/vicpoo/APIGOINIFAP/src/rol/domain"

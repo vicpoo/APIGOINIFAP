@@ -1,3 +1,4 @@
+//GetRolByIdUseCase.go
 package application
 
 import (

@@ -1,3 +1,4 @@
+//GetAllRolesUseCase.go
 package application
 
 import (

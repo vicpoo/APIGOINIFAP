@@ -10,6 +10,7 @@ import (
 	"github.com/vicpoo/APIGOINIFAP/src/core"
 	"github.com/vicpoo/APIGOINIFAP/src/rol/infrastructure"
 	usersInfrastructure "github.com/vicpoo/APIGOINIFAP/src/users/infrastructure"
+	municipiosInfrastructure "github.com/vicpoo/APIGOINIFAP/src/municipios/infrastructure"
 )
 
 func main() {
@@ -35,6 +36,10 @@ func main() {
 	// Registrar rutas de usuarios
 	userRouter := usersInfrastructure.NewUserRouter(engine)
 	userRouter.Run()
+
+	// Registrar rutas de municipios
+	municipiosRouter := municipiosInfrastructure.NewMunicipioRouter(engine)
+	municipiosRouter.Run()
 
 	// Correr servidor en el puerto 8000
 	port := ":8000"

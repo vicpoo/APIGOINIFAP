@@ -1,3 +1,4 @@
+// UpdateRecomendacionNutricionalUseCase.go
 package application
 
 import (
@@ -19,4 +20,9 @@ func (uc *UpdateRecomendacionNutricionalUseCase) Run(recomendacion *entities.Rec
 		return nil, err
 	}
 	return recomendacion, nil
+}
+
+// Agregar este método nuevo para obtener por ID
+func (uc *UpdateRecomendacionNutricionalUseCase) GetById(id int32) (*entities.RecomendacionNutricional, error) {
+	return uc.repo.GetById(id)
 }

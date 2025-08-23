@@ -17,7 +17,7 @@ func NewRecomendacionNutricionalRouter(engine *gin.Engine) *RecomendacionNutrici
 
 func (router *RecomendacionNutricionalRouter) Run() {
 	// Inicializar dependencias
-	createController, getByIdController, updateController, deleteController, getAllController := InitRecomendacionNutricionalDependencies()
+	createController, getByIdController, updateController, deleteController, getAllController, downloadController := InitRecomendacionNutricionalDependencies()
 
 	// Grupo de rutas para recomendaciones nutricionales
 	recomendacionGroup := router.engine.Group("/recomendaciones-nutricionales")
@@ -27,5 +27,10 @@ func (router *RecomendacionNutricionalRouter) Run() {
 		recomendacionGroup.PUT("/:id", updateController.Run)
 		recomendacionGroup.DELETE("/:id", deleteController.Run)
 		recomendacionGroup.GET("/", getAllController.Run)
+		
+		// Nuevas rutas para descargas
+		recomendacionGroup.GET("/:id/download", downloadController.RunByID)
+		recomendacionGroup.GET("/municipio/:municipio_id", downloadController.RunByMunicipio)
+		recomendacionGroup.GET("/municipio/:municipio_id/download-zip", downloadController.RunDownloadByMunicipio)
 	}
 }

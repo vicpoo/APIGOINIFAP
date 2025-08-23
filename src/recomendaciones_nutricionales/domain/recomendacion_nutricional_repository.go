@@ -11,4 +11,5 @@ type IRecomendacionNutricional interface {
 	Delete(id int32) error
 	GetById(id int32) (*entities.RecomendacionNutricional, error)
 	GetAll() ([]entities.RecomendacionNutricional, error)
+	GetByMunicipioID(municipioID int32) ([]entities.RecomendacionNutricional, error) // Nuevo método
 }

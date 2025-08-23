@@ -11,6 +11,7 @@ func InitRecomendacionNutricionalDependencies() (
 	*UpdateRecomendacionNutricionalController,
 	*DeleteRecomendacionNutricionalController,
 	*GetAllRecomendacionesNutricionalesController,
+	*DownloadRecomendacionNutricionalController, // Nuevo
 ) {
 	// Repositorio implementado en infraestructura
 	repo := NewMySQLRecomendacionNutricionalRepository()
@@ -21,6 +22,7 @@ func InitRecomendacionNutricionalDependencies() (
 	updateUseCase := application.NewUpdateRecomendacionNutricionalUseCase(repo)
 	deleteUseCase := application.NewDeleteRecomendacionNutricionalUseCase(repo)
 	getAllUseCase := application.NewGetAllRecomendacionesNutricionalesUseCase(repo)
+	downloadUseCase := application.NewDownloadRecomendacionNutricionalUseCase(repo) // Nuevo
 
 	// Controladores
 	createController := NewCreateRecomendacionNutricionalController(createUseCase)
@@ -28,6 +30,7 @@ func InitRecomendacionNutricionalDependencies() (
 	updateController := NewUpdateRecomendacionNutricionalController(updateUseCase)
 	deleteController := NewDeleteRecomendacionNutricionalController(deleteUseCase)
 	getAllController := NewGetAllRecomendacionesNutricionalesController(getAllUseCase)
+	downloadController := NewDownloadRecomendacionNutricionalController(downloadUseCase) // Nuevo
 
-	return createController, getByIdController, updateController, deleteController, getAllController
+	return createController, getByIdController, updateController, deleteController, getAllController, downloadController
 }

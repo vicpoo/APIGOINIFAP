@@ -2,6 +2,7 @@
 package infrastructure
 
 import (
+	"archive/zip"
 	"fmt"
 	"io"
 	"mime"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/vicpoo/APIGOINIFAP/src/recomendaciones_nutricionales/domain/entities"
 )
 
 type FileUploader struct {
@@ -114,4 +116,56 @@ func (fu *FileUploader) DeleteFile(folder, filename string) error {
 // GetFileURL genera la URL para acceder al archivo
 func (fu *FileUploader) GetFileURL(folder, filename string) string {
 	return fmt.Sprintf("/uploads/%s/%s", folder, filename)
+}
+
+// CreateZipFromPDFs crea un archivo ZIP con múltiples PDFs
+func (fu *FileUploader) CreateZipFromPDFs(recomendaciones []entities.RecomendacionNutricional, zipPath string) error {
+	zipFile, err := os.Create(zipPath)
+	if err != nil {
+		return fmt.Errorf("error al crear archivo ZIP: %v", err)
+	}
+	defer zipFile.Close()
+
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
+
+	for _, recomendacion := range recomendaciones {
+		// Verificar que el archivo existe
+		if _, err := os.Stat(recomendacion.RutaPDF); os.IsNotExist(err) {
+			continue // Saltar archivos que no existen
+		}
+
+		// Abrir archivo PDF
+		pdfFile, err := os.Open(recomendacion.RutaPDF)
+		if err != nil {
+			continue // Saltar archivos que no se pueden abrir
+		}
+		defer pdfFile.Close()
+
+		// Crear entrada en el ZIP
+		zipEntry, err := zipWriter.Create(recomendacion.NombrePDF)
+		if err != nil {
+			pdfFile.Close()
+			continue
+		}
+
+		// Copiar contenido del PDF al ZIP
+		_, err = io.Copy(zipEntry, pdfFile)
+		if err != nil {
+			continue
+		}
+	}
+
+	return nil
+}
+
+// GetFileInfo obtiene información del archivo
+func (fu *FileUploader) GetFileInfo(filePath string) (os.FileInfo, error) {
+	return os.Stat(filePath)
+}
+
+// FileExists verifica si un archivo existe
+func (fu *FileUploader) FileExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return !os.IsNotExist(err)
 }

@@ -165,3 +165,43 @@ func (mysql *MySQLRecomendacionNutricionalRepository) GetAll() ([]entities.Recom
 
 	return recomendaciones, nil
 }
+
+func (mysql *MySQLRecomendacionNutricionalRepository) GetByMunicipioID(municipioID int32) ([]entities.RecomendacionNutricional, error) {
+	query := `
+		SELECT id, municipio_id_FK, nombre_pdf, ruta_pdf, fecha_subida, user_id_FK
+		FROM recomendaciones_nutricionales
+		WHERE municipio_id_FK = ?
+		ORDER BY fecha_subida DESC
+	`
+	rows, err := mysql.conn.Query(query, municipioID)
+	if err != nil {
+		log.Println("Error al obtener recomendaciones por municipio:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var recomendaciones []entities.RecomendacionNutricional
+	for rows.Next() {
+		var recomendacion entities.RecomendacionNutricional
+		err := rows.Scan(
+			&recomendacion.ID,
+			&recomendacion.MunicipioID,
+			&recomendacion.NombrePDF,
+			&recomendacion.RutaPDF,
+			&recomendacion.FechaSubida,
+			&recomendacion.UserID,
+		)
+		if err != nil {
+			log.Println("Error al escanear la recomendación nutricional:", err)
+			return nil, err
+		}
+		recomendaciones = append(recomendaciones, recomendacion)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("Error después de iterar filas:", err)
+		return nil, err
+	}
+
+	return recomendaciones, nil
+}

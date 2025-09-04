@@ -13,7 +13,6 @@ import (
 	usersInfrastructure "github.com/vicpoo/APIGOINIFAP/src/users/infrastructure"
 	municipiosInfrastructure "github.com/vicpoo/APIGOINIFAP/src/municipios/infrastructure"
 	recomendacionesinfrastructure "github.com/vicpoo/APIGOINIFAP/src/recomendaciones_nutricionales/infrastructure"
-	clasificacionInfrastructure "github.com/vicpoo/APIGOINIFAP/src/clasificacion_resultados/infrastructure"
 )
 
 func main() {
@@ -47,10 +46,6 @@ func main() {
 	// Registrar rutas de recomendaciones
 	recomendacionesRouter := recomendacionesinfrastructure.NewRecomendacionNutricionalRouter(engine)
 	recomendacionesRouter.Run()
-
-	// Registrar rutas de clasificacion
-	clasificacionRouter := clasificacionInfrastructure.NewClasificacionResultadosRouter(engine)
-	clasificacionRouter.Run()
 
 	// Correr servidor en el puerto 8000
 	port := ":8000"
